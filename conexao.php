@@ -13,8 +13,8 @@ try {
         "mysql:host=localhost;dbname=VKadega;charset=utf8mb4",
         "root",
         ""
-        echo "Conexão bem-sucedida!"
     );
+    echo "Conexão bem-sucedida!";
 } catch (PDOException $erro) {
     echo "A conexão falhou: " . $erro->getMessage();
 }

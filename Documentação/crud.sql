@@ -1,0 +1,33 @@
+CREATE DATABASE crud;
+
+USE crud;
+
+CREATE TABLE Produtos (
+id INT NOT NULL AUTO_INCREMENT,
+tipo VARCHAR(45) NOT NULL,
+nome VARCHAR(45) NOT NULL,
+fornecedor VARCHAR(15) DEFAULT NULL,
+PRIMARY KEY(id)
+);
+SELECT * from usuarios;
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nomecompleto VARCHAR(100) NOT NULL,
+	login VARCHAR(100) NOT NULL,
+    senha VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE adegas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL
+);
+ALTER TABLE usuarios DROP COLUMN senha2;
+
+ALTER TABLE usuarios ADD COLUMN nomecompleto VARCHAR(255);
+ALTER TABLE usuarios ADD COLUMN senha2 VARCHAR(100);
+ALTER TABLE usuarios ADD COLUMN login VARCHAR(100);
+
+SELECT * FROM usuarios;
+ALTER TABLE usuarios DROP senha2 ;
+DROP TABLE adegas;

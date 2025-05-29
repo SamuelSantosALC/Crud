@@ -1,39 +1,27 @@
-<?php
-session_start();
-$pdo = new PDO('mysql:host=localhost;dbname=crud', 'root', '');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $login = $_POST['login'] ?? '';
-    $senha2 = $_POST['senha2'] ?? '';
-
-    $sql = "SELECT * FROM usuarios WHERE login = :login AND senha2 = :senha2";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':login', $login);
-    $stmt->bindValue(':senha2', $senha2);
-    $stmt->execute();
-
-    if ($stmt->rowCount() > 0) {
-        $_SESSION['admin'] = $login;
-        header('Location: dashboard.php');
-        exit;
-    } else {
-        $erro = "Login ou senha inválidos!";
-    }
-}
-?>
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Login Admin</title>
+    <meta charset="UTF-8">
+    <title>Página Inicial</title>
 </head>
 <body>
-    <form method="POST">
-        <h1>Login Admin</h1>
-        <p>Digite seu login e senha para acessar o painel administrativo.</p>
-        <input type="text" name="login" placeholder="Login" required>
-        <input type="password" name="senha2" placeholder="Senha" required>
-        <input type="submit" value="Entrar">
-    </form>
-    <?php if (!empty($erro)) echo $erro; ?>
+    <h1>Bem-vindo ao Adega control</h1>
+    <button onclick="window.location.href='login.php'">Fazer Login</button>
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $senha = $_POST['senha'] ?? '';
+
+        $pdo = new PDO('mysql:host=localhost;dbname=crud', 'root', '');
+
+        $sql = "INSERT INTO usuarios (nomecompleto, login, senha) VALUES (:nomecompleto, :login, :senha)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':nomecompleto', 'Nome Exemplo'); 
+        $stmt->bindValue(':login', 'login_exemplo');     
+        $stmt->bindValue(':senha', $senha);
+        $stmt->execute();
+
+        echo "Usuário cadastrado!";
+    }
+    ?>
 </body>
 </html>

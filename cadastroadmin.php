@@ -20,7 +20,7 @@ if (!isset($_SESSION['admin'])) {
         <input type="hidden" name="id">
         <input type="text" name="nomecompleto" placeholder="Nome Completo"/>
         <input type="text" name="login" placeholder="Login"/>
-        <input type="password" name="senha2" placeholder="Senha"/>
+        <input type="password" name="senha" placeholder="Senha"/>
 
         <input type="submit" value="Cadastrar" />
         <hr>
@@ -42,17 +42,17 @@ if (isset($_GET['act']) && $_GET['act'] === 'delete' && isset($_GET['id'])) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nomecompleto = $_POST['nomecompleto'] ?? '';
         $login = $_POST['login'] ?? '';
-        $senha2 = $_POST['senha2'] ?? '';
+        $senha = $_POST['senha'] ?? '';
 
-     if (empty($nomecompleto) || empty($login) || empty($senha2)) {
+     if (empty($nomecompleto) || empty($login) || empty($senha)) {
         echo " Preencha todos os campos pra cadastrar";
     } else {
         try {
-            $sql = "INSERT INTO usuarios (nomecompleto, login, senha2 ) VALUES (:nomecompleto, :login, :senha2)";
+            $sql = "INSERT INTO usuarios (nomecompleto, login, senha) VALUES (:nomecompleto, :login, :senha)";
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':nomecompleto', $nomecompleto);
             $stmt->bindValue(':login', $login);
-            $stmt->bindValue(':senha2', $senha2);
+            $stmt->bindValue(':senha', $senha);
             $stmt->execute();
         } catch (PDOException $e) {
             echo "Erro ao cadastrar: " . $e->getMessage();
