@@ -34,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="senha" placeholder="Senha" required>
         <input type="submit" value="Entrar">
     </form>
-    <?php if (!empty($erro)) echo $erro; ?>
     <p><a href="index.php">Voltar para a página inicial</a></p>
 </body>
 </html>

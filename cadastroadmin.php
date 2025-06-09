@@ -1,88 +1,52 @@
-<?php
-session_start();
-if (!isset($_SESSION['admin'])) {
-    header('Location: login.php');
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Sistema</title>
-      <script src="https://cdn.tailwindcss.com"></script>
+    <title>Adega Control</title>
 </head>
 <body>
-    <form action="?act=save" method="POST" name="form1">
-        <h1>Cadastro de Administradores</h1>
-        <hr>
-        <input type="hidden" name="id">
-        <input type="text" name="nomecompleto" placeholder="Nome Completo"/>
-        <input type="text" name="login" placeholder="Login"/>
-        <input type="password" name="senha" placeholder="Senha"/>
+    <h1>Cadastro</h1>
+    <form method="POST">
+    <label for="nome">Nome:</label>
+    <input type="text" name="nome" id="nome"><br><br>
 
-        <input type="submit" value="Cadastrar" />
-        <hr>
-        <br>
-    </form>
-         <button onclick="window.location.href='dashboard.php'">Voltar</button>
-    <?php
-$pdo = new PDO('mysql:host=localhost;dbname=crud', 'root', '');
+    <label for="login">Login:</label>
+    <input type="text" name="login" id="login"><br><br>
 
-if (isset($_GET['act']) && $_GET['act'] === 'delete' && isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $sql = "DELETE FROM usuarios WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':id', $id);
-    $stmt->execute();
-    exit;
-}
+    <label for="senha">Senha:</label>
+    <input type="password" name="senha" id="senha" required><br><br>
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $nomecompleto = $_POST['nomecompleto'] ?? '';
-        $login = $_POST['login'] ?? '';
-        $senha = $_POST['senha'] ?? '';
+    <input type="submit" value="Cadastrar">
+</form>
 
-     if (empty($nomecompleto) || empty($login) || empty($senha)) {
-        echo " Preencha todos os campos pra cadastrar";
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Pegando os dados enviados pelo formulário
+    $nome = $_POST['nome'] ?? '';
+    $login = $_POST['login'] ?? '';
+    $senha = $_POST['senha'] ?? '';
+
+    // Validação: impede campos vazios
+    if (empty($nome) || empty($login) || empty($senha)) {
+        echo "Por favor, preencha todos os campos!";
     } else {
-        try {
-            $sql = "INSERT INTO usuarios (nomecompleto, login, senha) VALUES (:nomecompleto, :login, :senha)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':nomecompleto', $nomecompleto);
-            $stmt->bindValue(':login', $login);
-            $stmt->bindValue(':senha', $senha);
-            $stmt->execute();
-        } catch (PDOException $e) {
-            echo "Erro ao cadastrar: " . $e->getMessage();
-        }
+        // Conexão com o banco de dados
+        $pdo = new PDO('mysql:host=localhost;dbname=crud', 'root', '');
+
+        // Aqui acontece a mágica: a senha é criptografada!
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+        // Agora salvamos o hash da senha no banco, não a senha original
+        $sql = "INSERT INTO usuarios (nome, login, senha) VALUES (:nome, :login, :senha)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':nome', $nome);
+        $stmt->bindValue(':login', $login);
+        $stmt->bindValue(':senha', $senhaHash); // Aqui vai o hash!
+        $stmt->execute();
+
+        echo "Usuário cadastrado com sucesso!";
     }
 }
-    ?>
-    <h2>Administradores Cadastrados</h2>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Nome Completo</th>
-            <th>Login</th>
-            <th>Ações</th>
-        </tr>
-        <?php
-        $sql = "SELECT id, nomecompleto, login FROM usuarios";
-        $stmt = $pdo->query($sql);
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($row['id']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['nomecompleto']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['login']) . "</td>";
-            echo "<td>
-                    <a href='?act=edit&id=" . ($row['id']) . "'>Editar</a> |
-                    <a href='?act=delete&id=" . ($row['id']) . "' onclick=\"return confirm('Tem certeza que deseja excluir?');\">Excluir</a>
-                  </td>";
-            echo "</tr>";
-        }
-        ?>
-    </table>
+?>
 </body>
 </html>
