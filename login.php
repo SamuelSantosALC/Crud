@@ -1,7 +1,6 @@
 <?php
+include_once 'conexao.php';
 session_start();
-$pdo = new PDO('mysql:host=localhost;dbname=crud', 'root', '');
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = $_POST['login'] ?? '';
     $senha = $_POST['senha'] ?? '';
@@ -34,6 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="senha" placeholder="Senha" required>
         <input type="submit" value="Entrar">
     </form>
-    <p><a href="index.php">Voltar para a página inicial</a></p>
+     <button onclick="window.location.href='cadastroadmin.php'">Voltar Para a Pagina Inicial</button>
 </body>
 </html>

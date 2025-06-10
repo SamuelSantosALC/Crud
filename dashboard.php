@@ -1,4 +1,5 @@
 <?php
+include_once'conexao.php';
 session_start();
 if (!isset($_SESSION['admin'])) {
     header('Location: login.php');
@@ -15,6 +16,11 @@ if (!isset($_SESSION['admin'])) {
 </head>
 
 <body>
+    <h1>Bem-vindo ao Painel Administrativo</h1>
+    <p>Olá, <?php echo htmlspecialchars($_SESSION['nome']); ?>!</p>
     <button onclick="window.location.href='cadastroadmin.php'">Cadastrar Novo Usuário</button>
+    <button onclick="window.location.href='admin.php'">Administradores</button>
+    <button onclick="window.location.href='index.php'"> Encerrar Sessão</button>
+
 </body>
 </html> 
