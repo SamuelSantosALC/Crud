@@ -5,7 +5,7 @@ $db = "crud";
 $user = "root";
 $pass = "";
 try {
-    $conexao = new PDO(
+    $pdo = new PDO(
         "mysql:host=localhost;dbname=crud;charset=utf8mb4",
         "root",
         ""

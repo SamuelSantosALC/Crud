@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adega Control</title>
+
 </head>
 <body>
     <h1>Cadastro</h1>
@@ -44,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         echo "Usuário cadastrado com sucesso!";
-        echo "<br><button onclick=\"window.location.href='dashboard.php'\">Voltar para o Painel Administrativo</button>";
+        echo "<br><button onclick=\"window.location.href='admin.php'\">Voltar</button>";
     }
 }
 ?>
