@@ -33,5 +33,6 @@ $sql = "SELECT id, nomecompleto, login FROM usuarios";
         }
    ?> 
    </table>
+    <button onclick="window.location.href='dashboard.php'">Voltar</button>
 </body>
 </html>

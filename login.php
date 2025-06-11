@@ -5,13 +5,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = $_POST['login'] ?? '';
     $senha = $_POST['senha'] ?? '';
 
-    $sql = "SELECT * FROM usuarios WHERE login = :login AND senha = :senha";
+    // Busca o usuário pelo login
+    $sql = "SELECT * FROM usuarios WHERE login = :login";
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':login', $login);
-    $stmt->bindValue(':senha', $senha);
     $stmt->execute();
 
-    if ($stmt->rowCount() > 0) {
+    $usuario = $stmt->fetch();
+    if ($usuario && password_verify($senha, $usuario['senha'])) {
         $_SESSION['admin'] = $login;
         header('Location: dashboard.php');
         exit;
@@ -34,6 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="senha" placeholder="Senha" required>
         <input type="submit" value="Entrar">
     </form>
-     <button onclick="window.location.href='cadastroadmin.php'">Voltar Para a Pagina Inicial</button>
+    <button onclick="window.location.href='cadastroadmin.php'">Voltar Para a Pagina Inicial</button>
 </body>
 </html>
