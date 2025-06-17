@@ -20,7 +20,7 @@ if (!isset($_SESSION['admin'])) {
     <h1>Bem-vindo ao Painel Administrativo</h1>
 
     <button onclick="window.location.href='admin.php'">Administradores</button>
-    <button onclick="window.location.href='login.php'"> Encerrar Sessão</button>
+    <button onclick="window.location.href='index.php'"> Encerrar Sessão</button>
 
 </body>
 </html> 

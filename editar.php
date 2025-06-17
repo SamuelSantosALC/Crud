@@ -1,51 +1,51 @@
 <?php
+
 include_once 'conexao.php';
 
-$id = $_GET['id'] ?? null;
-
-if (!$id) {
-    echo "ID inválido!";
+if (!isset($_GET['id'])) {
+    echo "Erro em voltar o ID";
     exit;
 }
+else {
+        $id = $_GET['id'];
+    }
 
-// Se o formulário foi enviado
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nomecompleto = $_POST['nomecompleto'];
-    $login = $_POST['login'];
-
-    $sql = "UPDATE usuarios SET nomecompleto = ?, login = ? WHERE id = ?";
+    $sql = "SELECT id, nomecompleto, login FROM usuarios WHERE id = ?";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$nomecompleto, $login, $id]);
+    $stmt->execute([$id]);
+    $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $nomecompleto = $_POST['nomecompleto'];
+        $login = $_POST['login'];
 
-    header("Location: admin.php");
-    exit;
-}
-
-// Buscar dados do usuário
-$sql = "SELECT * FROM usuarios WHERE id = ?";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$id]);
-$usuario = $stmt->fetch();
-
-if (!$usuario) {
-    echo "Usuário não encontrado!";
-    exit;
-}
+        if (empty($nomecompleto) || empty($login)) {
+            echo "Preencha todos os campos";
+        } else {
+            $sql = "UPDATE usuarios SET nomecompleto = :nomecompleto, login = :login WHERE id = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':nomecompleto', $nomecompleto);
+            $stmt->bindValue(':login', $login);
+            $stmt->bindValue(':id', $id);
+            $stmt->execute();
+            header("Location: admin.php");
+            exit;
+        }
+    }
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Usuário</title>
+    <title>Adega control</title>
 </head>
 <body>
     <h1>Editar Usuário</h1>
     <form method="post">
         <label>Nome Completo:</label><br>
-        <input type="text" name="nomecompleto" value="<?= htmlspecialchars($usuario['nomecompleto']) ?>" required><br><br>
+        <input type="text" name="nomecompleto" value="<?= ($usuario['nomecompleto']) ?>" required><br><br>
         <label>Login:</label><br>
-        <input type="text" name="login" value="<?= htmlspecialchars($usuario['login']) ?>" required><br><br>
+        <input type="text" name="login" value="<?= ($usuario['login']) ?>" required><br><br>
         <button type="submit">Salvar</button>
         <a href="admin.php">Cancelar</a>
     </form>

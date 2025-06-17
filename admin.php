@@ -27,7 +27,7 @@ $sql = "SELECT id, nomecompleto, login FROM usuarios";
                 echo "<td>" . htmlspecialchars($row['nomecompleto']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['login']) . "</td>";
                 echo "<td><button onclick=\"window.location.href='editar.php?id=" . $row['id'] . "'\">Editar</button> ";
-                echo "<button onclick=\"window.location.href='excluir.php?id=" . $row['id'] . "'\">Excluir</button></td>";
+                echo "<button onclick=\"if(confirm('Tem certeza que deseja excluir este registro?')){ window.location.href='excluir.php?id=" . $row['id'] . "'; }\">Excluir</button></td>";
                 echo "</tr>";
             }
         }

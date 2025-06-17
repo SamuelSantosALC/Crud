@@ -34,8 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($nomecompleto) || empty($login) || empty($senha)) {
         echo "Por favor, preencha todos os campos!";
     } else {
-        $pdo = new PDO('mysql:host=localhost;dbname=crud', 'root', '');
-
         $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
         $sql = "INSERT INTO usuarios (nomecompleto, login, senha) VALUES (:nomecompleto, :login, :senha)";
         $stmt = $pdo->prepare($sql);
