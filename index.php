@@ -19,7 +19,7 @@
     <div id="div_logo">
         <img src="assets/images/adegacontrol_logo_dark.PNG" alt="Logo Adega Control" id="logo">
     </div>
-    <div id="content_container" class="">
+    <div id="content_container">
         <div>
             <h1 id="welcome">Bem-vindo ao Adega control</h1>
         </div>
